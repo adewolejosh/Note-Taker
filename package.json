@@ -1,0 +1,11 @@
+{
+  "name": "my-notes",
+  "version": "1.0.0",
+  "description": "a API that helps to take notes the easy way and very fast.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua Adewole [https://github.com/adewolejosh/]",
+  "license": "ISC"
+}
