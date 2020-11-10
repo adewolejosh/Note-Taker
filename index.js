@@ -26,4 +26,6 @@ app.use('/', user_router);
 app.use('/', note_router);
 app.use('/', index_router);
 
-app.listen(3000, function(){});
+app.listen(3000, function() {
+	console.log("Now listening, on port 3000!")
+});
