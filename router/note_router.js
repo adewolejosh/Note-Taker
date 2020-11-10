@@ -6,8 +6,7 @@ const User = require('../model/user.js');
 var router = express.Router();
 
 // get all notes or create one note
-router.route('/notes')
-.get(function(req, res) {
+const GetNotes = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.findOne({ _id: owner }, function(err, user) {
@@ -15,11 +14,12 @@ router.route('/notes')
 				Note.find({ owner: owner }, function(err, notes) {
 					res.status(200).send(notes)
 				})
-			}	else{res.status(401).send("You need a correct _id to sign-in to view notes")}
+			}	else {res.status(401).send("You need a correct _id to sign-in to view notes")}
 		})
-	}	else{res.status(403).send("Send a valid owner _id in headers to get notes")}
-})
-.post(function(req, res) {
+	}	else {res.status(403).send("Send a valid owner _id in headers to get notes")}
+};
+
+const CreateNote = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.findOne({ _id: owner }, function(err, user) {
@@ -38,11 +38,10 @@ router.route('/notes')
 			} else {res.status(401).send("You need a correct _id to sign-in to view notes")}
 		})
 	}	else {res.status(403).send("Send a valid owner _id in headers to create notes")}
-});
+};
 
 // RUD one note
-router.route('/notes/:noteId')
-.get(function(req, res) {
+const ReadOneNote = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.findOne({ _id: owner }, function(err, user) {
@@ -55,8 +54,9 @@ router.route('/notes/:noteId')
 			}	else {res.status(401).send("You need correct _id(s) to view note")}
 		})
 	} else {res.status(403).send("Send a valid owner _id in headers to get notes")}
-})
-.put(function(req, res) {
+};
+
+const UpdateOneNote = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.findOne({ _id: owner }, function(err, user) {
@@ -80,8 +80,9 @@ router.route('/notes/:noteId')
 			}	else {res.status(401).send("You need correct _id(s) to view note")}
 		})
 	}	else {res.status(403).send("Send a valid owner _id in headers to edit notes")}
-})
-.delete(function(req, res) {
+};
+
+const DeleteOneNote = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.findOne({ _id: owner }, function(err, user) {
@@ -94,6 +95,17 @@ router.route('/notes/:noteId')
 			} else {res.status(401).send("You need correct _id(s) to delete note")}
 		})
 	} else {res.status(403).send("Send a valid owner _id in headers to delete notes")}
-})
+};
+
+
+router.route('/notes')
+.get(GetNotes)
+.post(CreateNote);
+
+router.route('/notes/:noteId')
+.get(ReadOneNote)
+.put(UpdateOneNote)
+.delete(DeleteOneNote);
+
 
 module.exports =  router

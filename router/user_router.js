@@ -5,9 +5,8 @@ const Note = require('../model/note.js');
 
 var router = express.Router();
 
-// get or create New Users
-router.route('/users')
-.get(function(req, res) {
+// CRUD User
+const GetUser = function(req, res) {
 	const { username, email } = req.body;
 	if(username && email) {
 		User.find({ username: username, email: email}, function(err, user) {
@@ -16,8 +15,9 @@ router.route('/users')
 			else {res.status(404).send("Sign-in to get your id")}
 		})
 	}	else {res.status(401).send("Username and email required")}
-})
-.post(function(req, res) {
+};
+
+const CreateUser = function(req, res) {
 	User.findOne({username: req.body.username, email: req.body.email}, function(err, user) {
 		if(user) {
 			res.send(`User with that Email and Username already exists`)
@@ -32,8 +32,9 @@ router.route('/users')
 			})
 		}
 	})
-})
-.put(function(req, res) {
+};
+
+const UpdateUser = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.findOne({ _id: owner }, function(err, user) {
@@ -53,8 +54,9 @@ router.route('/users')
 			}	else {res.status(401).send("You need correct Sign-in details")}
 		})
 	}	else {res.status(403).send("Send a valid owner _id in headers to edit user")}
-})
-.delete(function(req, res) {
+};
+
+const DeleteUser = function(req, res) {
 	const { owner } = req.headers;
 	if(owner) {
 		User.deleteOne({ _id: owner }, function(err, user) {
@@ -70,6 +72,14 @@ router.route('/users')
 			}
 		})
 	} else {res.status(403).send("Send a valid owner _id in headers to delete user")}
-})
+};
+
+
+router.route('/user')
+.get(GetUser)
+.post(CreateUser)
+.put(UpdateUser)
+.delete(DeleteUser);
+
 
 module.exports =  router
