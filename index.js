@@ -13,7 +13,7 @@ var app = express();
 
 mongoose.connect(url, c_s)
 .then(function(db) {
-	if(db){console.log("Connected")};
+ if(db){console.log("Connected")};
 });
 
 app.use(bodyParser.json());

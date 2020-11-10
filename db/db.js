@@ -9,5 +9,5 @@ var c_s = {
 }
 
 module.exports = {
-	url, c_s
+ url, c_s
 }
