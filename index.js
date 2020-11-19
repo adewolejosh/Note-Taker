@@ -17,8 +17,6 @@ mongoose.connect(url, c_s)
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.text());
-app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({ extended: true}));
 // app.use(cors());
 
@@ -27,5 +25,5 @@ app.use('/', note_router);
 app.use('/', index_router);
 
 app.listen(3000, function() {
-	console.log("Now listening, on port 3000!")
+ console.log("Now listening, on port 3000!")
 });
