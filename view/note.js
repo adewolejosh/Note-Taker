@@ -23,17 +23,28 @@ const CreateNote = function(req, res) {
  if(owner) {
   User.findOne({ _id: owner }, function(err, user) {
    if(user) {
-    var note = new Note({
-     owner: owner,
-     title: req.body.title, 
-     body: req.body.body
-    })
-    note.save(function(err) {
-     if(!err) {
-      console.log("Success!");
-      res.status(201).send(`Note with title: ${req.body.title}, Added Successfully`);
-     }
-    });
+    const { title, body } = req.body;
+    if(title.length > 0 && title.length < 300){
+      // re = /^ (\w\s\d)+ | \s+ | \d+ | \w+ $/
+      // if(re.test(title) = true){}
+      if(body.length >= 0 && title.length < 10000){
+        var note = new Note({
+         owner: owner,
+         title: title, 
+         body: body
+        })
+        note.save(function(err) {
+         if(!err) {
+          console.log("Success!");
+          res.status(201).send(`Note with title: ${title}, Added Successfully`);
+         }
+        });
+      } else {
+        res.status(403).send("Please send a note with less than 10000 characters!")
+      }
+    } else {
+      res.status(403).send("Please your title must not be empty and not too long!")
+    }
    } else {res.status(401).send("You need a correct _id to sign-in to view notes")}
   })
  } else {res.status(403).send("Send a valid owner _id in headers to create notes")}
@@ -89,7 +100,7 @@ const DeleteOneNote = function(req, res) {
     Note.findByIdAndDelete({ _id: req.params.noteId, owner: owner }, function(err, note) {
      if(note) {
       res.status(200).send(`${note.title} deleted successfully`)
-     } else {res.status(404).send(`No note from ${user.username} found`)}
+     } else {res.status(404).send(`There is no such note from ${user.username} found`)}
     })
    } else {res.status(401).send("You need correct _id(s) to delete note")}
   })

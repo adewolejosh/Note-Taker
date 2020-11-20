@@ -21,14 +21,22 @@ const CreateUser = function(req, res) {
   if(user) {
    res.send(`User with that Email and Username already exists`)
   } else {
-   const { username, email } = req.body;
-   var user = User.create({username: username, email: email}, function(err) {
-     if (!err) {
-      // res.status(201).send("Successfully added user: " + username);
-      res.status(201).send(`Successfully added user ${username}`);
-      console.log('Success!');
-     }
-   })
+    const { username, email } = req.body;
+    if(username.length > 1 && username.length < 100){
+      if(email.length > 1 && email.length < 254){
+        var user = User.create({username: username, email: email}, function(err) {
+          if (!err) {
+            // res.status(201).send("Successfully added user: " + username);
+            res.status(201).send(`Successfully added user ${username}`);
+            console.log('Success!');
+          }
+        })
+      } else {
+        res.status(403).send("Please send a valid email!");
+      }
+    } else {
+      res.status(403).send("Please send a valid username!");
+    }
   }
  })
 };
