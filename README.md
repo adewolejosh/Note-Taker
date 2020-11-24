@@ -8,14 +8,14 @@ Note-Taker creates user by simply using a unique username and email, nothing els
 is a title and a body and you're good to go. It also allows users to export their notes in formats e.g a doc file; In a scenerio whereby you don't have a system nearby, users can create amazing notes, export in MsWord format and later edit with MsWord or it's likes and save for later; Same goes for the pdf format, which I am currently working on. 
 Note-Taker is currently not hosted on any platform yet and many considerations are still being made; as per the fact of using mongodb as its database (seeing there's firebase), no UI designs have been made yet, no  Frontend thoughts yet and all that. So for now, it's more like open source, feel free to contribute at anytime, and if you've got any issues or additional features, let me know or you could just go ahead and make a pull request. Have Fun and I hope this reaches you well 💖!
 
-### Installation/How to Run
+## Installation/How to Run
 
-'''sh
+```sh
 $ git clone https://github.com/adewolejosh/Note-Taker.git
 $ npm install express mongoose --save
 $ cd Note-Taker
 $ node index.js
-'''
+```
 
 - Launch your browser (Or even better, **PostMan** is preferable) 
 - Go to localhost:3000 (this can be changed in the index.js file)
@@ -24,10 +24,10 @@ $ node index.js
 
 ###### P.S: 
 - I didn't take into consideration the mongodb setup as it is system variant.
-- Almost all operations require the User's ObjectId except the creation of a New User.
+- Almost all operations require the User's ObjectId in headers except e.g the creation of a New User.
 - Endeavor to check db/db.js to make sure your database url corresponds.
 
-### Authentication
+## Authentication
 
 Easy authentication 
 - __Username__ (unique) 
@@ -39,7 +39,7 @@ Easy authentication
 - UPDATE 
 - DELETE 
 
-### Note 
+## Note 
 
 Note 
 - __Title__
