@@ -17,28 +17,34 @@ const GetUser = function(req, res) {
 };
 
 const CreateUser = function(req, res) {
- User.findOne({username: req.body.username, email: req.body.email}, function(err, user) {
-  if(user) {
-   res.send(`User with that Email and Username already exists`)
-  } else {
-    const { username, email } = req.body;
-    if(username.length > 1 && username.length < 100){
-      if(email.length > 1 && email.length < 254){
-        var user = User.create({username: username, email: email}, function(err) {
-          if (!err) {
-            // res.status(201).send("Successfully added user: " + username);
-            res.status(201).send(`Successfully added user ${username}`);
-            console.log('Success!');
-          }
-        })
-      } else {
-        res.status(403).send("Please send a valid email!");
-      }
+  const { username, email } = req.body;
+  User.findOne({ email: email }, function(err, userEmail) {
+    if(userEmail) {
+      res.status(403).send(`User with that email already exists`)
     } else {
-      res.status(403).send("Please send a valid username!");
+      User.findOne({ username: username }, function(err, userName) {
+        if(userName) {
+          res.status(403).send(`User with that username already exists`)
+        } else {
+          if(username.length > 1 && username.length < 100) {
+            if(email.length > 1 && email.length < 254) {
+              var user = User.create({username: username, email: email}, function(err) {
+                if (!err) {
+                  // res.status(201).send("Successfully added user: " + username);
+                  res.status(201).send(`Successfully added user ${username}`);
+                  console.log('Success!');
+                }
+              })
+            } else {
+              res.status(403).send("Please send a valid email!");
+            }
+          } else {
+              res.status(403).send("Please send a valid username!");
+          }
+        }
+      })
     }
-  }
- })
+  })
 };
 
 const UpdateUser = function(req, res) {

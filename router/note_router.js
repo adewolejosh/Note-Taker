@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { GetNotes, CreateNote, ReadOneNote, UpdateOneNote, DeleteOneNote } = require('../view/note.js');
+const { GetNotes, CreateNote, ReadOneNote, UpdateOneNote, DeleteOneNote, NoteToConverter } = require('../view/note.js');
 
 var router = express.Router();
 
@@ -13,5 +13,7 @@ router.route('/notes/:noteId')
 .put(UpdateOneNote)
 .delete(DeleteOneNote);
 
+router.route('/note/converter')
+.get(NoteToConverter);
 
 module.exports =  router
