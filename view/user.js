@@ -27,7 +27,7 @@ const CreateUser = function(req, res) {
           res.status(403).send(`User with that username already exists`)
         } else {
           if(username.length > 1 && username.length < 100) {
-            if(email.length > 1 && email.length < 254) {
+            if(email.length > 10 && email.length < 254) {
               var user = User.create({username: username, email: email}, function(err) {
                 if (!err) {
                   // res.status(201).send("Successfully added user: " + username);
@@ -54,13 +54,33 @@ const UpdateUser = function(req, res) {
    if(user) {
     const { username, email } = req.body;
     if(username && email) {
-     user.username = username;
-     user.email = email;
-     user.save(function(err) {
-      if(!err) {
-       res.status(200).send(user);
-      }
-     })
+      if(username.length > 1 && username.length < 100) {
+        if (email.length > 10 && email.length < 254) {
+          User.findOne({ email: email }, function(err, userName) {
+            if(userName) {
+              res.status(403).send("User with that username is already taken!")
+            } else {
+              User.findOne({ username: username }, function(err, userEmail) {
+                if(userEmail) {
+                  res.status(403).send("User with such email already exists!")
+                } else {
+                  user.username = username;
+                  user.email = email;
+                  user.save(function(err) {
+                  if(!err) {
+                   res.status(200).send(user);
+                  }
+                 })
+                }
+              })
+            }
+          })
+        } else {
+          res.status(403).send("Please send in a email of reasonable length")
+        }
+      } else {
+        res.status(403).send("Please send a username of reasonable length")
+      } 
     } else {res.status(403).send(
      "Update must include email and username"
     )}
@@ -86,7 +106,6 @@ const DeleteUser = function(req, res) {
   })
  } else {res.status(403).send("Send a valid owner _id in headers to delete user")}
 };
-
 
 
 module.exports =  {
