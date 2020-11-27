@@ -8,14 +8,13 @@ Note-Taker creates user by simply using a unique username and email, nothing els
 is a title and a body and you're good to go. It also allows users to export their notes in formats e.g a doc file;
 
 ###### Scenerios
-	- Imagine going out without a laptop hanging close by, users can create notes and export them to any file format for free e.g the .doc 								format for MsWord Documents, without downloading any apps. (same with .pdf format [which I am currently working on]) 
+	- Imagine going out without a laptop hanging close by, users can create notes and export them to any file format for free e.g the .doc format for MsWord Documents, without downloading any apps. (same with .pdf format [which I am currently working on]) 
 
-
-Note-Taker is currently not hosted on any platform yet and many considerations are still being made; 
+Note-Taker is currently not hosted on any platform yet and many considerations are still being made;
+ 
 	- As per the fact of using mongodb as its database (seeing there's firebase), 
 	- No UI designs have been made yet, 
 	- No Frontend thoughts yet and all that. 
-
 
 So for now, it's more like open source, feel free to contribute at anytime, and if you've got any issues or additional features, let me know or you could just go ahead and make a pull request. Have Fun and I hope this reaches you well 💖!
 
@@ -24,7 +23,7 @@ So for now, it's more like open source, feel free to contribute at anytime, and 
 
 ```sh
 $ git clone https://github.com/adewolejosh/Note-Taker.git
-$ npm install express mongoose --save
+$ npm install express mongoose pdfkit --save
 $ cd Note-Taker
 $ node index.js
 ```
@@ -32,12 +31,11 @@ $ node index.js
 - Launch your browser (Or even better, **PostMan** is preferable) 
 - Go to localhost:3000 (this can be changed in the index.js file)
 
-
-
 ###### P.S: 
 - I didn't take into consideration the npm/nodejs/mongodb setup as it is system variant.
 - Almost all operations require the User's ObjectId in headers except e.g the creation of a New User.
 - Endeavor to check db/db.js to make sure your database url corresponds.
+
 
 ## Authentication
 
@@ -50,6 +48,7 @@ Easy authentication
 - POST (create a new user)
 - UPDATE (update user's details)
 - DELETE (delete a user)
+
 
 ## Note 
 
@@ -67,7 +66,10 @@ Note
 - DELETE (delete one note)
 
 ##### localhost:{port}/note/converter
-- GET (export your notes in any format e.g doc)
+- GET (export your notes in any format e.g .doc(Microsoft Word Document format))
+
+##### localhost:{port}/note/pdf
+- GET (export your notes in a pdf format)
 
 
 ## Additional features being considered:
@@ -78,5 +80,5 @@ Note
 
 
 ## Author
-Joshua Adewole
+Joshua Adewole 
 [Github](https://github.com/adewolejosh) [Twitter](https://twitter.com/adewole_josh/)

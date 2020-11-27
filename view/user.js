@@ -18,33 +18,37 @@ const GetUser = function(req, res) {
 
 const CreateUser = function(req, res) {
   const { username, email } = req.body;
-  User.findOne({ email: email }, function(err, userEmail) {
-    if(userEmail) {
-      res.status(403).send(`User with that email already exists`)
-    } else {
-      User.findOne({ username: username }, function(err, userName) {
-        if(userName) {
-          res.status(403).send(`User with that username already exists`)
-        } else {
-          if(username.length > 1 && username.length < 100) {
-            if(email.length > 10 && email.length < 254) {
-              var user = User.create({username: username, email: email}, function(err) {
-                if (!err) {
-                  // res.status(201).send("Successfully added user: " + username);
-                  res.status(201).send(`Successfully added user ${username}`);
-                  console.log('Success!');
-                }
-              })
-            } else {
-              res.status(403).send("Please send a valid email!");
-            }
+  if(username && email) {
+    if(username.length > 1 && username.length < 100) {
+      if(email.length > 10 && email.length < 254) {
+        User.findOne({ email: email }, function(err, userEmail) {
+          if(userEmail) {
+            res.status(403).send(`User with that email already exists`)
           } else {
-              res.status(403).send("Please send a valid username!");
+            User.findOne({ username: username }, function(err, userName) {
+              if(userName) {
+                res.status(403).send(`User with that username already exists`)
+              } else {
+                var user = User.create({username: username, email: email}, function(err) {
+                  if (!err) {
+                    // res.status(201).send("Successfully added user: " + username);
+                    res.status(201).send(`Successfully added user ${username}`);
+                    console.log('Success!');
+                  }
+                })
+              }
+            })
           }
-        }
-      })
+        })
+      } else {
+        res.status(403).send("Please send a valid email!");
+      }
+    } else {
+      res.status(403).send("Please send a valid username!");
     }
-  })
+  } else {
+    res.status(403).send("Please sign-up with a username and email!");
+  }
 };
 
 const UpdateUser = function(req, res) {

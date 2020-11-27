@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const PDFDocument = require('pdfkit');
 const mongoose = require('mongoose');
 const Note = require('../model/note.js');
 const User = require('../model/user.js');
@@ -110,42 +111,81 @@ const DeleteOneNote = function(req, res) {
 };
 
 
-// Note Converter
+// Note Converters
 const NoteToConverter = function(req, res) {
   const { owner } = req.headers;
   if(owner) {
     User.findOne({ _id: owner }, function(err, user) {
-    if(user) {
-      const { type, noteId } = req.body; // Please for now make sure the "type" is in [doc or pdf**]
-      Note.findOne({ owner: owner, _id: noteId }, function(err, note) {
-        if(note) {
-          fs.writeFile(`tempStorage/${ note.title }.${ type }`, `${ note.body }`, function(err, file) {
-            if(err) {throw error}
-            else {
-              res.type(`${ type }`).download(`tempStorage/${ note.title }.${ type }`, function(err) {
-                if(err) {
-                  throw err;
-                } else {
-                  fs.unlink(`tempStorage/${ note.title }.${ type }`, function(err) {
-                    if(err) { 
-                      throw err 
-                    } else {
-                      console.log('I think I have deleted it!');
-                    }
-                  });
-                }
-              }) 
-              console.log(`sent ${ note.title }.${ type } to owner: ${ user.email }`)
-            }
-          })
-        } else {res.status(404).send(`No notes from ${ user.username } found`)}
-      })
-    } else {res.status(401).send("You need correct _id(s) to view note")}
+      if(user) {
+        const { type, noteId } = req.body; // Please for now make sure the "type" is in [doc or pdf**]
+        Note.findOne({ owner: owner, _id: noteId }, function(err, note) {
+          if(note) {
+            fs.writeFile(`tempStorage/${ note.title }.${ type }`, `${ note.body }`, function(err, file) {
+              if(err) {throw error}
+              else {
+                res.type(`${ type }`).download(`tempStorage/${ note.title }.${ type }`, function(err) {
+                  if(err) {
+                    throw err;
+                  } else {
+                    fs.unlink(`tempStorage/${ note.title }.${ type }`, function(err) {
+                      if(err) { 
+                        throw err 
+                      } else {
+                        console.log('I think I have deleted it!');
+                      }
+                    });
+                  }
+                }) 
+                console.log(`sent ${ note.title }.${ type } to owner: ${ user.email }`)
+              }
+            })
+          } else {res.status(404).send(`No notes from ${ user.username } found`)}
+        })
+      } else {res.status(401).send("You need correct _id(s) to view note")}
+    })
+  } else {res.status(403).send("Send a valid owner _id in headers to get notes")} 
+};
+
+const NoteToPDF = function(req, res) {
+  const { owner } = req.headers;
+  if(owner) {
+    User.findOne({ _id: owner }, function(err, user) {
+      if(user) {
+        const { noteId } = req.body; // Please for now make sure the "type" is in [doc or pdf**]
+        Note.findOne({ owner: owner, _id: noteId }, function(err, note) {
+          if(note) {
+            const doc = new PDFDocument;
+            // doc.pipe(fs.createWriteStream(`tempStorage/fuckyou.pdf`));
+            doc.pipe(fs.createWriteStream(`tempStorage/${ note.title }.pdf`));
+            doc.pipe(res); 
+            doc
+              .fontSize(12)
+              .text(`${ note.body }`);
+            doc.end()
+            res.download(`tempStorage/${ note.title }.pdf`, function(err) {
+              if(!err){
+                throw err;
+              } else {
+                console.log(`sent the pdf already!`) 
+                fs.unlink(`tempStorage/${ note.title }.pdf`, function(err) {
+                  if(!err) {
+                    console.log("Hopefully I deleted the pdf")
+                  } else {
+                    throw err;
+                  }
+                })
+              }
+            });
+          } else {
+            res.status(404).send(`No such note from ${ user.username } found`);
+          }
+        })
+      } else {res.status(401).send("You need correct _id(s) to view note")}
     })
   } else {res.status(403).send("Send a valid owner _id in headers to get notes")} 
 };
 
 
 module.exports =  {
-  GetNotes, CreateNote, ReadOneNote, UpdateOneNote, DeleteOneNote, NoteToConverter
+  GetNotes, CreateNote, ReadOneNote, UpdateOneNote, DeleteOneNote, NoteToConverter, NoteToPDF
 };
