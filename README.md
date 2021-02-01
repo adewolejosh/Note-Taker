@@ -2,7 +2,7 @@
 
 
 ## About
-Note-Taker is a Rest Api that allows people create unique users, create, read, update and delete amazing notes seamlessly. 
+Note-Taker is a Rest Api that allows people create, read, update and delete unique users, create, read, update and delete amazing notes seamlessly. Also with added feautures like exporting of notes to any file format and many other cool features.
 Inspired by [Tania Rascia's](https://taniarascia.com) [Takenote.dev](https://takenote.dev). 
 Note-Taker creates user by simply using a unique username and email, nothing else. For taking notes, all that's needed 
 is a title and a body and you're good to go. It also allows users to export their notes in formats e.g a doc file;
@@ -13,7 +13,7 @@ is a title and a body and you're good to go. It also allows users to export thei
 Note-Taker is currently not hosted on any platform yet and many considerations are still being made;
  
 	- As per the fact of using mongodb as its database (seeing there's firebase), 
-	- No UI designs have been made yet, 
+	- No thoughts on UI designs have been made yet, 
 	- No Frontend thoughts yet and all that. 
 
 So for now, it's more like open source, feel free to contribute at anytime, and if you've got any issues or additional features, let me know or you could just go ahead and make a pull request. Have Fun and I hope this reaches you well 💖!
@@ -81,4 +81,4 @@ Note
 
 ## Author
 Joshua Adewole 
-[Github](https://github.com/adewolejosh) [Twitter](https://twitter.com/adewole_josh/)
+[Github](https://github.com/adewolejosh) [Twitter](https://twitter.com/adewole_josh/) [Website](https://adewolejosh.herokuapp.com)

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
-var url = 'mongodb://localhost:27017/NotesDB';
+var local_url = 'localhost:27017/NotesDB';
+
+var url = `mongodb://${local_url}`;
 var c_s = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
